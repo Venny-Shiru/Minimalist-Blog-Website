@@ -1,0 +1,1115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minimalist Blog</title>
+    <style>
+        /* Reset and base styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f9f9f9;
+            transition: background-color 0.3s ease;
+        }
+        
+        /* Dark mode styles */
+        body.dark-mode {
+            background-color: #1a1a1a;
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode .header {
+            background-color: #2a2a2a;
+        }
+        
+        body.dark-mode .card {
+            background-color: #2a2a2a;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+        }
+        
+        body.dark-mode .nav a {
+            color: #f0f0f0;
+        }
+        
+        body.dark-mode footer {
+            background-color: #2a2a2a;
+            color: #f0f0f0;
+        }
+        
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        /* Header */
+        .header {
+            background-color: white;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            transition: background-color 0.3s ease;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        /* Navigation */
+        .nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .nav a {
+            text-decoration: none;
+            color: #333;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+        
+        .nav a:hover {
+            color: #0066cc;
+        }
+        
+        .nav a.active {
+            color: #0066cc;
+            border-bottom: 2px solid #0066cc;
+        }
+        
+        /* Mobile menu */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+        }
+        
+        /* Hero section */
+        .hero {
+            text-align: center;
+            padding: 60px 0;
+        }
+        
+        .hero h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 700px;
+            margin: 0 auto 30px;
+        }
+        
+        /* Cards grid */
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin: 40px 0;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-image {
+            height: 200px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .card-content {
+            padding: 20px;
+        }
+        
+        .card-content h3 {
+            margin-bottom: 10px;
+        }
+        
+        .card-content p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .card-date {
+            font-size: 0.85rem;
+            color: #888;
+            margin-bottom: 10px;
+        }
+        
+        .read-more {
+            display: inline-block;
+            padding: 8px 15px;
+            background-color: #0066cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        .read-more:hover {
+            background-color: #0052a3;
+        }
+        
+        /* Article page */
+        .article {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .article-header h1 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+        
+        .article-meta {
+            color: #888;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .article-content p {
+            margin-bottom: 20px;
+        }
+        
+        .article-content img {
+            max-width: 100%;
+            margin: 20px 0;
+        }
+        
+        /* About page */
+        .about {
+            max-width: 800px;
+            margin: 40px auto;
+        }
+        
+        .about img {
+            border-radius: 50%;
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        
+        /* Contact page */
+        .contact-form {
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+        }
+        
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 1rem;
+            background-color: #f9f9f9;
+            transition: border-color 0.3s ease, background-color 0.3s ease;
+        }
+        
+        body.dark-mode input, body.dark-mode textarea {
+            background-color: #333;
+            color: #f0f0f0;
+            border-color: #444;
+        }
+        
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: #0066cc;
+        }
+        
+        textarea {
+            min-height: 150px;
+            resize: vertical;
+        }
+        
+        button {
+            padding: 10px 20px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s ease;
+        }
+        
+        button:hover {
+            background-color: #0052a3;
+        }
+        
+        /* Footer */
+        footer {
+            background-color: white;
+            padding: 30px 0;
+            margin-top: 60px;
+            box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .footer-links ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+        }
+        
+        .footer-links a {
+            text-decoration: none;
+            color: inherit;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .social-links a {
+            color: inherit;
+            text-decoration: none;
+            font-size: 1.2rem;
+        }
+        
+        /* Theme toggle */
+        .theme-toggle {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            color: inherit;
+            margin-left: 20px;
+        }
+        
+        /* Newsletter */
+        .newsletter {
+            background-color: #f0f7ff;
+            padding: 50px 0;
+            text-align: center;
+            margin-top: 60px;
+            transition: background-color 0.3s ease;
+        }
+        
+        body.dark-mode .newsletter {
+            background-color: #2a2a2a;
+        }
+        
+        .newsletter h2 {
+            margin-bottom: 20px;
+        }
+        
+        .newsletter p {
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+        
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+        
+        .newsletter-form input {
+            flex-grow: 1;
+            margin-right: 10px;
+        }
+        
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .nav {
+                margin-top: 20px;
+            }
+            
+            .nav ul {
+                flex-direction: column;
+                gap: 10px;
+                text-align: center;
+            }
+            
+            .logo {
+                margin-bottom: 15px;
+            }
+            
+            .hamburger {
+                display: block;
+                position: absolute;
+                top: 15px;
+                right: 15px;
+            }
+            
+            .nav {
+                display: none;
+            }
+            
+            .nav.show {
+                display: block;
+            }
+            
+            .newsletter-form {
+                flex-direction: column;
+            }
+            
+            .newsletter-form input {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                gap: 20px;
+                text-align: center;
+            }
+            
+            .footer-links ul {
+                justify-content: center;
+            }
+            
+            .social-links {
+                justify-content: center;
+            }
+        }
+        
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+        }
+        
+        /* Comments section */
+        .comments {
+            margin-top: 40px;
+        }
+        
+        .comment {
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 15px;
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: 500;
+        }
+        
+        .comment-date {
+            color: #888;
+            font-size: 0.9rem;
+        }
+        
+        .placeholder {
+            background-color: #eee;
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #888;
+            font-weight: 500;
+        }
+        
+        body.dark-mode .placeholder {
+            background-color: #333;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="#" class="logo" data-page="home">Minimalist Blog</a>
+                <button class="hamburger">☰</button>
+                <nav class="nav">
+                    <ul>
+                        <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                        <li><a href="#" class="nav-link" data-page="about">About</a></li>
+                        <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+                        <li><button class="theme-toggle">🌙</button></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero fade-in">
+                <h1>Welcome to Minimalist Blog</h1>
+                <p>A clean, simple space to share thoughts and ideas about minimalism, productivity, and intentional living.</p>
+            </div>
+            
+            <div class="blog-grid fade-in">
+                <!-- Blog post 1 -->
+                <article class="card">
+                    <div class="card-image">
+                        <div class="placeholder">
+                            <img src="https://images.pexels.com/photos/6686442/pexels-photo-6686442.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Minimalism Image">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-date">May 10, 2025</span>
+                        <h3>The Art of Digital Minimalism</h3>
+                        <p>Discover how reducing digital clutter can lead to a more focused and intentional life.</p>
+                        <a href="#" class="read-more" data-article="article1">Read More</a>
+                    </div>
+                </article>
+                
+                <!-- Blog post 2 -->
+                <article class="card">
+                    <div class="card-image">
+                        <div class="placeholder">
+                            <img src="https://images.pexels.com/photos/313690/pexels-photo-313690.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Productivity Image">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-date">May 7, 2025</span>
+                        <h3>5 Productivity Techniques That Actually Work</h3>
+                        <p>Time-tested methods to increase your productivity without burning out.</p>
+                        <a href="#" class="read-more" data-article="article2">Read More</a>
+                    </div>
+                </article>
+                
+                <!-- Blog post 3 -->
+                <article class="card">
+                    <div class="card-image">
+                        <div class="placeholder">
+                            <img src="https://images.pexels.com/photos/1051838/pexels-photo-1051838.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Mindfulness Image">
+                            </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-date">May 3, 2025</span>
+                        <h3>Mindfulness in the Digital Age</h3>
+                        <p>How to stay present and mindful in a world of constant notifications.</p>
+                        <a href="#" class="read-more" data-article="article3">Read More</a>
+                    </div>
+                </article>
+                
+                <!-- Blog post 4 -->
+                <article class="card">
+                    <div class="card-image">
+                        <div class="placeholder">
+                            <img src="https://images.pexels.com/photos/8092357/pexels-photo-8092357.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Workspace Image">
+                            </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-date">April 29, 2025</span>
+                        <h3>Creating a Minimalist Workspace</h3>
+                        <p>Design tips for a clean, distraction-free workspace that boosts creativity.</p>
+                        <a href="#" class="read-more" data-article="article4">Read More</a>
+                    </div>
+                </article>
+                
+                <!-- Blog post 5 -->
+                <article class="card">
+                    <div class="card-image">
+                        <div class="placeholder">
+                            <img src="https://images.pexels.com/photos/5038877/pexels-photo-5038877.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Habits Image">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-date">April 25, 2025</span>
+                        <h3>Building Sustainable Habits</h3>
+                        <p>The science behind habit formation and how to make positive changes that last.</p>
+                        <a href="#" class="read-more" data-article="article5">Read More</a>
+                    </div>
+                </article>
+                
+                <!-- Blog post 6 -->
+                <article class="card">
+                    <div class="card-image">
+                        <div class="placeholder">
+                            <img src="https://images.pexels.com/photos/6237991/pexels-photo-6237991.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Reading Image">
+                        </div>
+                    </div>
+                    <div class="card-content">
+                        <span class="card-date">April 20, 2025</span>
+                        <h3>The Lost Art of Deep Reading</h3>
+                        <p>How to rediscover the joy of focused reading in the age of skimming.</p>
+                        <a href="#" class="read-more" data-article="article6">Read More</a>
+                    </div>
+                </article>
+            </div>
+        </section>
+        
+        <!-- About Page -->
+        <section id="about" class="page">
+            <div class="about fade-in">
+                <h1>About Minimalist Blog</h1>
+                <div class="placeholder" style="border-radius: 50%; width: 150px; height: 150px; margin: 30px auto;">
+                    <img src="profile-image.jpg" alt="Profile Image">
+                </div>
+                <p>Hello! I'm Venny, the creator of Minimalist Blog. I started this blog in 2023 as a way to document my journey towards a more intentional life. After years of feeling overwhelmed by consumerism and digital clutter, I decided to embrace minimalism as a way to focus on what truly matters.</p>
+                <p>On this blog, I share practical tips, personal stories, and insights about:</p>
+                <ul style="margin-left: 20px; margin-bottom: 20px;">
+                    <li>Digital minimalism</li>
+                    <li>Productivity systems</li>
+                    <li>Mindfulness practices</li>
+                    <li>Intentional living</li>
+                    <li>Sustainable habits</li>
+                </ul>
+                <p>My goal is to inspire others to simplify their lives, reduce unnecessary distractions, and make room for what brings them joy and fulfillment.</p>
+                <p>Thank you for being here. I hope you find value in these pages.</p>
+            </div>
+        </section>
+        
+        <!-- Contact Page -->
+        <section id="contact" class="page">
+            <div class="contact-form fade-in">
+                <h1>Get in Touch</h1>
+                <p>Have a question, suggestion, or just want to say hello? Fill out the form below, and I'll get back to you as soon as possible.</p>
+                <form id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name</label>
+                        <input type="text" id="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="subject">Subject</label>
+                        <input type="text" id="subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="message">Message</label>
+                        <textarea id="message" required></textarea>
+                    </div>
+                    <button type="submit">Send Message</button>
+                    <p id="formStatus" style="margin-top: 20px;"></p>
+                </form>
+            </div>
+        </section>
+        
+        <!-- Article 1 -->
+        <section id="article1" class="page">
+            <article class="article fade-in">
+                <div class="article-header">
+                    <h1>The Art of Digital Minimalism</h1>
+                    <div class="article-meta">
+                        <span>By Alex Johnson • May 10, 2025 • 5 min read</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="placeholder">
+                        <img src="https://images.pexels.com/photos/6686442/pexels-photo-6686442.jpeg?auto=compress&cs=tinysrgb&w=600" alt=" Article Feature Image" height="100%" width="100%">
+                    </div>
+                    <p>In today's hyperconnected world, we're constantly bombarded with notifications, emails, social media updates, and an endless stream of content. The average person checks their phone 58 times a day, with some studies suggesting numbers as high as 96 times – that's once every 10 minutes.</p>
+                    <p>Digital minimalism offers an alternative approach. Coined by Cal Newport in his book "Digital Minimalism," the philosophy encourages us to be more intentional about our technology use. Rather than reactively responding to every ping and notification, digital minimalism asks us to step back and question: Which digital tools actually add value to my life? And how can I use them in a way that aligns with my values?</p>
+                    <h2>The Cost of Digital Clutter</h2>
+                    <p>Our devices and apps are designed to capture as much of our attention as possible. Each notification, like, and autoplay feature is carefully engineered to keep us engaged. The problem isn't just the time we spend on these platforms but the mental bandwidth they consume even when we're not actively using them.</p>
+                    <p>Research has shown that even the presence of a smartphone can reduce cognitive capacity. Our brains are constantly anticipating interruptions, making it difficult to focus deeply on meaningful work or be fully present in our relationships.</p>
+                    <h2>Principles of Digital Minimalism</h2>
+                    <p>Here are some core principles to guide your journey toward digital minimalism:</p>
+                    <ol style="margin-left: 20px; margin-bottom: 20px;">
+                        <li><strong>Clutter is costly.</strong> Every app, subscription, and digital service you use comes with a cost – not just monetary but in terms of attention and cognitive load.</li>
+                        <li><strong>Optimization is important.</strong> It's not about using technology less but using it better. Optimize how you use digital tools to support your values rather than letting them dictate your behavior.</li>
+                        <li><strong>Intentionality is satisfying.</strong> Making deliberate choices about technology use rather than falling into default settings can lead to a more satisfying relationship with the digital world.</li>
+                    </ol>
+                    <h2>Practical Steps to Digital Minimalism</h2>
+                    <p>Ready to embrace digital minimalism? Here are some practical steps to get started:</p>
+                    <ol style="margin-left: 20px; margin-bottom: 20px;">
+                        <li><strong>Conduct a digital declutter.</strong> Take a 30-day break from optional technologies in your life. This reset period helps you identify which digital tools you truly miss and value.</li>
+                        <li><strong>Define your technology rules.</strong> After the declutter period, reintroduce technology with clear rules about when and how you'll use each tool.</li>
+                        <li><strong>Embrace high-quality leisure.</strong> Fill your time with meaningful offline activities that require skill and provide satisfaction.</li>
+                        <li><strong>Redesign your digital environment.</strong> Remove tempting apps from your home screen, turn off non-essential notifications, and use tools like website blockers during focused work periods.</li>
+                        <li><strong>Practice digital sabbaths.</strong> Designate regular periods (such as evenings or weekends) where you disconnect completely from optional technologies.</li>
+                    </ol>
+                    <p>Remember, digital minimalism isn't about rejecting technology altogether. It's about reclaiming your attention and using technology as a tool that serves your values and goals, rather than letting it control your time and attention.</p>
+                    <p>What steps are you taking to cultivate a healthier relationship with technology? Share your experiences in the comments below.</p>
+                    <div class="comments">
+                        <h3>Comments (3)</h3>
+                        <div class="comment">
+                            <div class="comment-header">
+                                <span class="comment-author">Jamie Smith</span>
+                                <span class="comment-date">May 11, 2025</span>
+                            </div>
+                            <p>I've been practicing digital sabbaths on Sundays for the past month, and it's been transformative. Initially, I felt anxious without my phone, but now I look forward to that day of disconnection. My focus and creativity have improved dramatically!</p>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-header">
+                                <span class="comment-author">Taylor Wu</span>
+                                <span class="comment-date">May 10, 2025</span>
+                            </div>
+                            <p>Great article! I've implemented the "no phones in the bedroom" rule, and my sleep quality has improved significantly. It's amazing how such a simple change can make such a big difference.</p>
+                        </div>
+                        <div class="comment">
+                            <div class="comment-header">
+                                <span class="comment-author">Casey Johnson</span>
+                                <span class="comment-date">May 10, 2025</span>
+                            </div>
+                            <p>I tried digital minimalism but found it too restrictive. Instead, I've found a middle ground that works for me - using technology intentionally during set hours and taking regular breaks. Balance is key!</p>
+                        </div>
+                        <!-- Add comment form -->
+                        <form id="commentForm" style="margin-top: 20px;">
+                            <div class="form-group">
+                                <label for="commentName">Name</label>
+                                <input type="text" id="commentName" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="commentText">Your Comment</label>
+                                <textarea id="commentText" required></textarea>
+                            </div>
+                            <button type="submit">Post Comment</button>
+                        </form>
+                    </div>
+                </div>
+            </article>
+        </section>
+        
+        <!-- Remaining article placeholders -->
+        <section id="article2" class="page">
+            <article class="article fade-in">
+                <div class="article-header">
+                    <h1>5 Productivity Techniques That Actually Work</h1>
+                    <div class="article-meta">
+                        <span>By Alex Johnson • May 7, 2025 • 4 min read</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="placeholder">
+                        <img src="https://images.pexels.com/photos/313690/pexels-photo-313690.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Productivity Article Image" height="100%" width="100%">
+                    </div>
+                    <p>This is a placeholder for the full article content about productivity techniques. In a real implementation, this would contain the complete article text.</p>
+                    <p>The article would discuss techniques like the Pomodoro Technique, time blocking, the Eisenhower Matrix, and other evidence-based productivity methods.</p>
+                </div>
+            </article>
+        </section>
+        
+        <section id="article3" class="page">
+            <article class="article fade-in">
+                <div class="article-header">
+                    <h1>Mindfulness in the Digital Age</h1>
+                    <div class="article-meta">
+                        <span>By Alex Johnson • May 3, 2025 • 6 min read</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="placeholder"><img src="https://images.pexels.com/photos/1051838/pexels-photo-1051838.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Mindfulness Article Image" height="100%" width="100%">
+                    </div>
+                    <p>This is a placeholder for the full article content about mindfulness. In a real implementation, this would contain the complete article text.</p>
+                    <p>The article would explore practices and strategies for maintaining mindfulness despite digital distractions.</p>
+                </div>
+            </article>
+        </section>
+        
+        <section id="article4" class="page">
+            <article class="article fade-in">
+                <div class="article-header">
+                    <h1>Creating a Minimalist Workspace</h1>
+                    <div class="article-meta">
+                        <span>By Alex Johnson • April 29, 2025 • 5 min read</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="placeholder"><img src="https://images.pexels.com/photos/8092357/pexels-photo-8092357.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Workspace Article Image" height="100%" width="100%">
+                    </div>
+                    <p>This is a placeholder for the full article content about minimalist workspaces. In a real implementation, this would contain the complete article text.</p>
+                    <p>The article would provide practical tips for creating a clean, organized workspace that promotes focus and creativity.</p>
+                </div>
+            </article>
+        </section>
+        
+        <section id="article5" class="page">
+            <article class="article fade-in">
+                <div class="article-header">
+                    <h1>Building Sustainable Habits</h1>
+                    <div class="article-meta">
+                        <span>By Alex Johnson • April 25, 2025 • 7 min read</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="placeholder"><img src="https://images.pexels.com/photos/5038877/pexels-photo-5038877.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Habits Article Image" height="100%" width="100%"></div>
+                    <p>This is a placeholder for the full article content about habit formation. In a real implementation, this would contain the complete article text.</p>
+                    <p>The article would explore the science of habit formation and provide strategies for building lasting positive habits.</p>
+                </div>
+            </article>
+        </section>
+        
+        <section id="article6" class="page">
+            <article class="article fade-in">
+                <div class="article-header">
+                    <h1>The Lost Art of Deep Reading</h1>
+                    <div class="article-meta">
+                        <span>By Alex Johnson • April 20, 2025 • 6 min read</span>
+                    </div>
+                </div>
+                <div class="article-content">
+                    <div class="placeholder"><img src="https://images.pexels.com/photos/6237991/pexels-photo-6237991.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Reading Article Image" height="100%" width="100%"></div>
+                    <p>This is a placeholder for the full article content about deep reading. In a real implementation, this would contain the complete article text.</p>
+                    <p>The article would discuss how to rediscover focused reading in a world of digital distractions and short-form content.</p>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <h2>Subscribe to Our Newsletter</h2>
+            <p>Get weekly insights on minimalism, productivity, and mindful living delivered straight to your inbox.</p>
+            <form class="newsletter-form" id="newsletterForm">
+                <input type="email" placeholder="Your email address" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <p id="newsletterStatus" style="margin-top: 20px;"></p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    © 2025 Minimalist Blog. All rights reserved.
+                </div>
+                <div class="footer-links">
+                    <ul>
+                        <li><a href="#" data-page="home">Home</a></li>
+                        <li><a href="#" data-page="about">About</a></li>
+                        <li><a href="#" data-page="contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="social-links">
+                    <a href="#">Facebook</a>
+                    <a href="#">Twitter</a>
+                    <a href="#">Instagram</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // DOM Elements
+        const body = document.body;
+        const themeToggle = document.querySelector('.theme-toggle');
+        const hamburger = document.querySelector('.hamburger');
+        const nav = document.querySelector('.nav');
+        const navLinks = document.querySelectorAll('.nav-link');
+        const readMoreLinks = document.querySelectorAll('.read-more');
+        const pages = document.querySelectorAll('.page');
+        const logoLink = document.querySelector('.logo');
+        const contactForm = document.getElementById('contactForm');
+        const formStatus = document.getElementById('formStatus');
+        const newsletterForm = document.getElementById('newsletterForm');
+        const newsletterStatus = document.getElementById('newsletterStatus');
+        const commentForm = document.getElementById('commentForm');
+        const footerLinks = document.querySelectorAll('.footer-links a');
+
+        // Navigation
+        function navigateTo(pageId) {
+            // Hide all pages
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+                window.scrollTo(0, 0);
+            }
+            
+            // Update active nav link
+            navLinks.forEach(link => {
+                if (link.getAttribute('data-page') === pageId) {
+                    link.classList.add('active');
+                } else {
+                    link.classList.remove('active');
+                }
+            });
+            
+            // Close mobile menu if open
+            if (nav.classList.contains('show')) {
+                nav.classList.remove('show');
+            }
+        }
+        
+        // Event Listeners
+        
+        // Theme Toggle
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            themeToggle.textContent = body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+        
+        // Mobile Menu Toggle
+        hamburger.addEventListener('click', () => {
+            nav.classList.toggle('show');
+        });
+        
+        // Nav Links
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const pageId = link.getAttribute('data-page');
+                navigateTo(pageId);
+            });
+        });
+        
+        // Logo Link
+        logoLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            navigateTo('home');
+        });
+        
+        // Read More Links
+        readMoreLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const articleId = link.getAttribute('data-article');
+                navigateTo(articleId);
+            });
+        });
+        
+        // Footer Links
+        footerLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                const pageId = link.getAttribute('data-page');
+                if (pageId) {
+                    e.preventDefault();
+                    navigateTo(pageId);
+                }
+            });
+        });
+        
+        // Contact Form Submission
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Simulate form submission
+            formStatus.textContent = 'Sending message...';
+            
+            setTimeout(() => {
+                console.log('Form submitted:', { name, email, subject, message });
+                formStatus.textContent = 'Message sent successfully! We\'ll get back to you soon.';
+                formStatus.style.color = '#28a745';
+                
+                // Reset form
+                contactForm.reset();
+                
+                // Reset status message after 5 seconds
+                setTimeout(() => {
+                    formStatus.textContent = '';
+                }, 5000);
+            }, 1500);
+        });
+        
+        // Newsletter Form Submission
+        newsletterForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get email value
+            const email = newsletterForm.querySelector('input[type="email"]').value;
+            
+            // Simulate form submission
+            newsletterStatus.textContent = 'Subscribing...';
+            
+            setTimeout(() => {
+                console.log('Newsletter subscription:', email);
+                newsletterStatus.textContent = 'Thank you for subscribing to our newsletter!';
+                newsletterStatus.style.color = '#28a745';
+                
+                // Reset form
+                newsletterForm.reset();
+                
+                // Reset status message after 5 seconds
+                setTimeout(() => {
+                    newsletterStatus.textContent = '';
+                }, 5000);
+            }, 1500);
+        });
+        
+        // Comment Form Submission (if exists on the page)
+        if (commentForm) {
+            commentForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Get comment values
+                const name = document.getElementById('commentName').value;
+                const commentText = document.getElementById('commentText').value;
+                
+                // Create new comment element
+                const commentContainer = document.querySelector('.comments');
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                
+                // Get current date
+                const date = new Date();
+                const formattedDate = `${date.toLocaleString('default', { month: 'long' })} ${date.getDate()}, ${date.getFullYear()}`;
+                
+                // Set comment HTML
+                newComment.innerHTML = `
+                    <div class="comment-header">
+                        <span class="comment-author">${name}</span>
+                        <span class="comment-date">${formattedDate}</span>
+                    </div>
+                    <p>${commentText}</p>
+                `;
+                
+                // Insert new comment before the form
+                commentContainer.insertBefore(newComment, commentForm);
+                
+                // Reset form
+                commentForm.reset();
+                
+                // Update comment count
+                const commentsTitle = document.querySelector('.comments h3');
+                const commentCount = document.querySelectorAll('.comment').length;
+                commentsTitle.textContent = `Comments (${commentCount})`;
+            });
+        }
+        
+        // Search functionality (placeholder for demonstration)
+        function searchArticles(query) {
+            console.log('Searching for:', query);
+            // In a real implementation, this would filter articles based on the query
+            alert(`Search functionality would filter articles containing "${query}"`);
+        }
+        
+        // Apply fade-in animation to elements as they scroll into view
+        function handleScrollAnimations() {
+            const elementsToAnimate = document.querySelectorAll('.card, .article, .about, .contact-form');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('fade-in');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+            
+            elementsToAnimate.forEach(element => {
+                observer.observe(element);
+            });
+        }
+        
+        // Initialize animations
+        handleScrollAnimations();
+        
+        // Add reading time functionality
+        function calculateReadingTime() {
+            const articleContents = document.querySelectorAll('.article-content');
+            
+            articleContents.forEach(content => {
+                // Get text content only (excludes HTML)
+                const text = content.textContent;
+                // Average reading speed: 200 words per minute
+                const wordsPerMinute = 200;
+                // Count words
+                const wordCount = text.split(/\s+/).length;
+                // Calculate reading time
+                const readingTime = Math.ceil(wordCount / wordsPerMinute);
+                
+                // Find the article meta element
+                const metaElement = content.closest('article').querySelector('.article-meta span');
+                if (metaElement) {
+                    // Update reading time in the meta information
+                    const metaText = metaElement.textContent;
+                    metaElement.textContent = metaText.replace(/\d+ min read/, `${readingTime} min read`);
+                }
+            });
+        }
+        
+        // Calculate reading time on page load
+        calculateReadingTime();
+    </script>
+</body>
+</html>                
